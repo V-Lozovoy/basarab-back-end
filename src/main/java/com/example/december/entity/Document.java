@@ -1,10 +1,7 @@
 package com.example.december.entity;
 
 import com.example.december.type.DocumentType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -19,6 +16,7 @@ public class Document {
     private String name;
 
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private DocumentType type;
 
     @Column(name = "body")

@@ -1,18 +1,16 @@
 package com.example.december.service;
-
 import com.example.december.entity.Document;
 import com.example.december.repository.DocumentRepository;
-import com.example.december.type.DocumentType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DocumentService {
     private final DocumentRepository documentRepository;
 
+    @Autowired
     public DocumentService(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
     }
