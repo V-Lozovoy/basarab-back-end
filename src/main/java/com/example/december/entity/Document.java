@@ -25,13 +25,13 @@ public class Document {
     private String body;
 
     @Column(name = "created_date")
-    private LocalDate created_date;
+    private LocalDate createdDate;
 
     @Column(name = "signed_date")
-    private LocalDate signed_date;
+    private LocalDate signedDate;
 
     @Column(name = "user_login")
-    private String user_login;
+    private String userLogin;
 
     public String getCode() {
         return code;
@@ -65,27 +65,27 @@ public class Document {
         this.body = body;
     }
 
-    public LocalDate getCreated_date() {
-        return created_date;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(LocalDate created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public LocalDate getSigned_date() {
-        return signed_date;
+    public LocalDate getSignedDate() {
+        return signedDate;
     }
 
-    public void setSigned_date(LocalDate signed_date) {
-        this.signed_date = signed_date;
+    public void setSignedDate(LocalDate signedDate) {
+        this.signedDate = signedDate;
     }
 
-    public String getUser_login() {
-        return user_login;
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public void setUser_login(String user_login) {
-        this.user_login = user_login;
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 }

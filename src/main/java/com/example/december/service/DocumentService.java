@@ -18,9 +18,8 @@ public class DocumentService {
     }
 
     // Знайти документ за кодом
-    public String getDocument(String code) {
-        Optional<Document> documentOptional = documentRepository.findById(code);
-        return documentOptional.map(Document::getBody).orElse("Document is not found");
+    public Document getDocument(String code) {
+        return documentRepository.findById(code).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
     }
 
     // Додати новий документ
@@ -34,9 +33,9 @@ public class DocumentService {
             existingDocument.setName(updatedDocument.getName());
             existingDocument.setType(updatedDocument.getType());
             existingDocument.setBody(updatedDocument.getBody());
-            existingDocument.setCreated_date(updatedDocument.getCreated_date());
-            existingDocument.setSigned_date(updatedDocument.getSigned_date());
-            existingDocument.setUser_login(updatedDocument.getUser_login());
+            existingDocument.setCreatedDate(updatedDocument.getCreatedDate());
+            existingDocument.setSignedDate(updatedDocument.getSignedDate());
+            existingDocument.setUserLogin(updatedDocument.getUserLogin());
             return documentRepository.save(existingDocument);
         }).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
     }
@@ -47,19 +46,19 @@ public class DocumentService {
     }
 
     // Знайти документ за логіном користувача
-    public List<Document> getDocumentsByUser(String user_login) {
-        return documentRepository.findByUserLogin(user_login);
+    public List<Document> getDocumentsByUser(String userLogin) {
+        return documentRepository.findByUserLogin(userLogin);
     }
 
     // Знайти підписаний документ за логіном користувача
-    public List<Document> getSignedDocumentByUser(String user_login) {
-        return documentRepository.findByUserLoginAndSignedDate(user_login);
+    public List<Document> getSignedDocumentByUser(String userLogin) {
+        return documentRepository.findByUserLoginAndSignedDateIsNotNull(userLogin);
     }
 
 
     // Знайти не підписаний документ за логіном користувача
-    public List<Document> getUnsignedDocumentByUser(String user_login) {
-        return documentRepository.findByUserLoginAndUnsignedDate(user_login);
+    public List<Document> getUnsignedDocumentByUser(String userLogin) {
+        return documentRepository.findByUserLoginAndSignedDateIsNull(userLogin);
     }
 
     // Знайти документ за певний період
