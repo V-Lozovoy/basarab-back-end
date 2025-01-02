@@ -1,10 +1,12 @@
 package com.example.december.service;
+import com.example.december.dto.DocumentDto;
 import com.example.december.entity.Document;
 import com.example.december.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DocumentService {
@@ -16,25 +18,30 @@ public class DocumentService {
     }
 
     // Знайти документ за кодом
-    public Document getDocument(String code) {
-        return documentRepository.findById(code).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
+    public DocumentDto getDocument(String code) {
+        Document document = documentRepository.findById(code).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
+        return convertToDto(document);
     }
 
     // Додати новий документ
-    public Document addDocument(Document document) {
-        return documentRepository.save(document);
+    public DocumentDto addDocument(DocumentDto documentDto) {
+        Document document = convertToEntity(documentDto);
+        Document savedDocument = documentRepository.save(document);
+        return convertToDto(savedDocument);
     }
 
     // Оновити документ
-    public Document updateDocument(String code, Document updatedDocument) {
+    public DocumentDto updateDocument(String code, DocumentDto updatedDocumentDto) {
         return documentRepository.findById(code).map(existingDocument -> {
-            existingDocument.setName(updatedDocument.getName());
-            existingDocument.setType(updatedDocument.getType());
-            existingDocument.setBody(updatedDocument.getBody());
-            existingDocument.setCreatedDate(updatedDocument.getCreatedDate());
-            existingDocument.setSignedDate(updatedDocument.getSignedDate());
-            existingDocument.setUserLogin(updatedDocument.getUserLogin());
-            return documentRepository.save(existingDocument);
+            existingDocument.setName(updatedDocumentDto.getName());
+            existingDocument.setType(updatedDocumentDto.getType());
+            existingDocument.setBody(updatedDocumentDto.getBody());
+            existingDocument.setCreatedDate(updatedDocumentDto.getCreatedDate());
+            existingDocument.setSignedDate(updatedDocumentDto.getSignedDate());
+            existingDocument.setUserLogin(updatedDocumentDto.getUserLogin());
+
+            Document updatedDocument = documentRepository.save(existingDocument);
+            return convertToDto(updatedDocument);
         }).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
     }
 
@@ -44,27 +51,52 @@ public class DocumentService {
     }
 
     // Знайти документ за логіном користувача
-    public List<Document> getDocumentsByUser(String userLogin) {
-        return documentRepository.findByUserLogin(userLogin);
+    public List<DocumentDto> getDocumentsByUser(String userLogin) {
+        return documentRepository.findByUserLogin(userLogin).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     // Знайти підписаний документ за логіном користувача
-    public List<Document> getSignedDocumentByUser(String userLogin) {
-        return documentRepository.findByUserLoginAndSignedDateIsNotNull(userLogin);
+    public List<DocumentDto> getSignedDocumentByUser(String userLogin) {
+        return documentRepository.findByUserLoginAndSignedDateIsNotNull(userLogin).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
 
     // Знайти не підписаний документ за логіном користувача
-    public List<Document> getUnsignedDocumentByUser(String userLogin) {
-        return documentRepository.findByUserLoginAndSignedDateIsNull(userLogin);
+    public List<DocumentDto> getUnsignedDocumentByUser(String userLogin) {
+        return documentRepository.findByUserLoginAndSignedDateIsNull(userLogin).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     // Знайти документ за певний період
-    public List<Document> getDocumentByDateRange(LocalDate startDate, LocalDate endDate) {
-        return documentRepository.findByCreatedDateBetween(startDate, endDate);
+    public List<DocumentDto> getDocumentByDateRange(LocalDate startDate, LocalDate endDate) {
+        return documentRepository.findByCreatedDateBetween(startDate, endDate).stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    private DocumentDto convertToDto(Document document) {
+        DocumentDto documentDto = new DocumentDto();
+        documentDto.setCode(document.getCode());
+        documentDto.setName(document.getName());
+        documentDto.setType(document.getType());
+        documentDto.setBody(document.getBody());
+        documentDto.setCreatedDate(document.getCreatedDate());
+        documentDto.setSignedDate(document.getSignedDate());
+        documentDto.setUserLogin(document.getUserLogin());
+        return documentDto;
+    }
+
+    private Document convertToEntity(DocumentDto documentDto) {
+        Document document = new Document();
+        document.setCode(documentDto.getCode());
+        document.setName(documentDto.getName());
+        document.setType(documentDto.getType());
+        document.setBody(documentDto.getBody());
+        document.setCreatedDate(documentDto.getCreatedDate());
+        document.setSignedDate(documentDto.getSignedDate());
+        document.setUserLogin(documentDto.getUserLogin());
+        return document;
     }
 
 //    public String write(String name) {
 //        return "Document " + name + " is writing";
 //    }
+
 }

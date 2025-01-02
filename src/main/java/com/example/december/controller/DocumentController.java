@@ -1,6 +1,6 @@
 package com.example.december.controller;
 
-import com.example.december.entity.Document;
+import com.example.december.dto.DocumentDto;
 import com.example.december.service.DocumentService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +20,8 @@ public class DocumentController {
     }
 
     @GetMapping(path = "/{code}")
-    public ResponseEntity<Document> getDocument(@PathVariable String code) {
-        Document document;
-        document = documentService.getDocument(code);
+    public ResponseEntity<DocumentDto> getDocument(@PathVariable String code) {
+        DocumentDto document = documentService.getDocument(code);
         return ResponseEntity.ok(document);
     }
 
@@ -33,15 +32,15 @@ public class DocumentController {
 //    }
 
     @PostMapping
-    public ResponseEntity<Document> addDocument(@RequestBody Document document) {
-        Document savedDocument = documentService.addDocument(document);
+    public ResponseEntity<DocumentDto> addDocument(@RequestBody DocumentDto documentDto) {
+        DocumentDto savedDocument = documentService.addDocument(documentDto);
         return ResponseEntity.ok(savedDocument);
     }
 
     @PutMapping(path = "/{code}")
-    public ResponseEntity<Document> updateDocument(@PathVariable String code, @RequestBody Document updatedDocument) {
-        Document document = documentService.updateDocument(code, updatedDocument);
-        return ResponseEntity.ok(document);
+    public ResponseEntity<DocumentDto> updateDocument(@PathVariable String code, @RequestBody DocumentDto updatedDocumentDto) {
+        DocumentDto updatedDocument = documentService.updateDocument(code, updatedDocumentDto);
+        return ResponseEntity.ok(updatedDocument);
     }
 
     @DeleteMapping(path = "/{code}")
@@ -51,28 +50,28 @@ public class DocumentController {
     }
 
     @GetMapping(path = "/user/{userLogin}")
-    public ResponseEntity<List<Document>> getDocumentsByUser(@PathVariable String userLogin) {
-        List<Document> documents = documentService.getDocumentsByUser(userLogin);
+    public ResponseEntity<List<DocumentDto>> getDocumentsByUser(@PathVariable String userLogin) {
+        List<DocumentDto> documents = documentService.getDocumentsByUser(userLogin);
         return ResponseEntity.ok(documents);
     }
 
     @GetMapping(path = "/user/{userLogin}/signed")
-    public ResponseEntity<List<Document>> getSignedDocumentsByUser(@PathVariable String userLogin) {
-        List<Document> documents = documentService.getSignedDocumentByUser(userLogin);
+    public ResponseEntity<List<DocumentDto>> getSignedDocumentsByUser(@PathVariable String userLogin) {
+        List<DocumentDto> documents = documentService.getSignedDocumentByUser(userLogin);
         return ResponseEntity.ok(documents);
     }
 
     @GetMapping(path = "/user/{userLogin}/unsigned")
-    public ResponseEntity<List<Document>> getUnsignedDocumentsByUser(@PathVariable String userLogin) {
-        List<Document> documents = documentService.getUnsignedDocumentByUser(userLogin);
+    public ResponseEntity<List<DocumentDto>> getUnsignedDocumentsByUser(@PathVariable String userLogin) {
+        List<DocumentDto> documents = documentService.getUnsignedDocumentByUser(userLogin);
         return ResponseEntity.ok(documents);
     }
 
     @GetMapping(path = "/dates")
-    public ResponseEntity<List<Document>> getDocumentByDateRange(
+    public ResponseEntity<List<DocumentDto>> getDocumentByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        List<Document> documents = documentService.getDocumentByDateRange(startDate, endDate);
+        List<DocumentDto> documents = documentService.getDocumentByDateRange(startDate, endDate);
         return ResponseEntity.ok(documents);
     }
 }
