@@ -19,13 +19,11 @@ public class DocumentService {
         this.documentRepository = documentRepository;
     }
 
-    // Знайти документ за кодом
     public DocumentDto getDocument(String code) {
         Document document = documentRepository.findById(code).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
         return convertToDto(document);
     }
 
-    // Отримати усі документи
     public List<DocumentDto> getDocuments() {
         List<Document> documents = documentRepository.findAll();
         return documents.stream().map(this::convertToDto).collect(Collectors.toList());
