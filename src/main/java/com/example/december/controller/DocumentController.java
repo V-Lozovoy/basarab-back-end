@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,11 +24,10 @@ public class DocumentController {
         return ResponseEntity.ok(document);
     }
 
-//    @GetMapping(path = "/{code}")
-//    @ResponseBody
-//    public Document searchDocument(@RequestParam String code) {
-//        return documentService.getDocument(code);
-//    }
+    @GetMapping(path = "/all")
+    public List<DocumentDto> getAllDocuments() {
+        return documentService.getDocuments();
+    }
 
     @PostMapping
     public ResponseEntity<DocumentDto> addDocument(@RequestBody DocumentDto documentDto) {

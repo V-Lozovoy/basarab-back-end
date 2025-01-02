@@ -1,4 +1,5 @@
 package com.example.december.service;
+
 import com.example.december.dto.DocumentDto;
 import com.example.december.entity.Document;
 import com.example.december.repository.DocumentRepository;
@@ -21,6 +22,12 @@ public class DocumentService {
     public DocumentDto getDocument(String code) {
         Document document = documentRepository.findById(code).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
         return convertToDto(document);
+    }
+
+    // Отримати усі документи
+    public List<DocumentDto> getDocuments() {
+        List<Document> documents = documentRepository.findAll();
+        return documents.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     // Додати новий документ
@@ -94,9 +101,4 @@ public class DocumentService {
         document.setUserLogin(documentDto.getUserLogin());
         return document;
     }
-
-//    public String write(String name) {
-//        return "Document " + name + " is writing";
-//    }
-
 }
