@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RestController
-@RequestMapping("/documents")
+@RequestMapping(path = "/documents")
 public class DocumentController {
     private final DocumentService documentService;
     public DocumentController(DocumentService documentService) {

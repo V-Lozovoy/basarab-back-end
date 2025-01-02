@@ -3,6 +3,7 @@ package com.example.december.service;
 import com.example.december.dto.DocumentDto;
 import com.example.december.entity.Document;
 import com.example.december.repository.DocumentRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -38,6 +39,7 @@ public class DocumentService {
     }
 
     // Оновити документ
+    @Transactional
     public DocumentDto updateDocument(String code, DocumentDto updatedDocumentDto) {
         return documentRepository.findById(code).map(existingDocument -> {
             existingDocument.setName(updatedDocumentDto.getName());
