@@ -29,14 +29,12 @@ public class DocumentService {
         return documents.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Додати новий документ
     public DocumentDto addDocument(DocumentDto documentDto) {
         Document document = convertToEntity(documentDto);
         Document savedDocument = documentRepository.save(document);
         return convertToDto(savedDocument);
     }
 
-    // Оновити документ
     @Transactional
     public DocumentDto updateDocument(String code, DocumentDto updatedDocumentDto) {
         return documentRepository.findById(code).map(existingDocument -> {
@@ -52,28 +50,22 @@ public class DocumentService {
         }).orElseThrow(() -> new IllegalArgumentException("Документ з кодом: " + code + " не знайдено"));
     }
 
-    // Видалити документ
     public void deleteDocument(String code) {
         documentRepository.deleteById(code);
     }
 
-    // Знайти документ за логіном користувача
     public List<DocumentDto> getDocumentsByUser(String userLogin) {
         return documentRepository.findByUserLogin(userLogin).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Знайти підписаний документ за логіном користувача
     public List<DocumentDto> getSignedDocumentByUser(String userLogin) {
         return documentRepository.findByUserLoginAndSignedDateIsNotNull(userLogin).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-
-    // Знайти не підписаний документ за логіном користувача
     public List<DocumentDto> getUnsignedDocumentByUser(String userLogin) {
         return documentRepository.findByUserLoginAndSignedDateIsNull(userLogin).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    // Знайти документ за певний період
     public List<DocumentDto> getDocumentByDateRange(LocalDate startDate, LocalDate endDate) {
         return documentRepository.findByCreatedDateBetween(startDate, endDate).stream().map(this::convertToDto).collect(Collectors.toList());
     }

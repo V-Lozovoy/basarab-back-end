@@ -1,69 +1,31 @@
 package com.example.december.dto;
 import com.example.december.type.DocumentType;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
 import java.time.LocalDate;
 
+@Data
 public class DocumentDto {
+    @Schema(name = "code", title = "Унікальний код документа")
     private String code;
+
+    @Schema(name = "name", title = "Назва документа")
     private String name;
+
+    @Schema(name = "type", title = "Тип документа")
     private DocumentType type;
+
+    @Schema(name = "body", title = "Опис документа")
     private String body;
+
+    @Schema(name = "createdDate", title = "Дата створення документу")
     private LocalDate createdDate;
+
+    @Schema(name = "signedDate", title = "Дата підпису документу")
     private LocalDate signedDate;
+
+    @Schema(name = "code", title = "Логін користувача")
     private String userLogin;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public DocumentType getType() {
-        return type;
-    }
-
-    public void setType(DocumentType type) {
-        this.type = type;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public LocalDate getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDate getSignedDate() {
-        return signedDate;
-    }
-
-    public void setSignedDate(LocalDate signedDate) {
-        this.signedDate = signedDate;
-    }
-
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
 }
